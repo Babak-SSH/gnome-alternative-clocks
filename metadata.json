@@ -1,0 +1,9 @@
+{
+    "name": "alternative-clocks",
+    "description": "COOL alternative-clocks for gnome shell.",
+    "uuid": "alternative-clocks@babak-ssh",
+    "shell-version": ["3.30.2"],
+    "settings-schema": "org.gnome.shell.extensions.alternative-clocks",
+    "version": 1.0,
+    "gettext-domain": "babak-ssh"
+}
