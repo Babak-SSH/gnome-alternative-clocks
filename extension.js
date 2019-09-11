@@ -15,7 +15,7 @@ class MhinClock {
     constructor(){
     }
   
-    BuildTime() {}
+    BuildClock() {}
 }
 
 
@@ -23,7 +23,7 @@ class TimeTuner {
     constructor(){
     }
   
-    BuildTime() {}
+    BuildClock() {}
 }
 
 
@@ -31,7 +31,7 @@ class BinaryClock {
     constructor(){
     }
   
-    BuildTime() {}
+    BuildClock() {}
 }
 
 
@@ -41,7 +41,7 @@ class FuzzyClock {
         new_clock.add_child(this.label);
     }
   
-    BuildTime() {
+    BuildClock() {
         var scale = 5
         var adverbs = ['exactly ', 'around ', 'almost ']
         var hourList = [' ONE', ' TWO', ' THREE', ' FOUR', ' FIVE', ' SIX',
@@ -129,8 +129,8 @@ function enable() {
 
     date_menu.remove_all_children(orig_clock);
     date_menu.add_child(new_clock);
-    signalID = date_menu.connect("notify::text", box.BuildTime);
-    box.BuildTime();
+    signalID = date_menu.connect("notify::text", box.BuildClock);
+    box.BuildClock();
 }
 
 
