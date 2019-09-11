@@ -1,10 +1,11 @@
 const St = imports.gi.St;
-const Main = imports.ui.main;
 const Gio = imports.gi.Gio;
+const Clutter = imports.gi.Clutter;
+
 const Me = imports.misc.extensionUtils.getCurrentExtension();
-
-
-date_menu = Main.panel.statusArea.dateMenu.actor;
+const Main = imports.ui.main;
+const panel = Main.panel;
+const DATE_MENU = panel.statusArea.dateMenu.actor;
 
 let orig_clock = null;
 let box = null;
@@ -29,25 +30,80 @@ class TimeTuner {
 
 class BinaryClock {
     constructor() {
+        // width of lines between the squares (px)
+        let LINE_WIDTH = 2;
+        // marging around the entire clock top & bottom (px)
+        let MARGIN = 1;
+        // padding square and the black centre
+        let PADDING = 2;
+
         this.rect = new St.DrawingArea();
-        new_clock.add_child(this.rect);
-    }
-  
-    BuildClock() {}
-}
-
-
-class FuzzyClock {
-    constructor() {
-        this.label = new St.Label();
         // Box size. Should be *even* and integer but still fit vertically.
         this.bs = Math.floor((Panel.PANEL_ICON_SIZE - 2 * MARGIN - LINE_WIDTH) / 2);
         if (this.bs % 2) {
             this.bs -= 1;
         }
         let height = 2 * this.bs + LINE_WIDTH;
-        this.binary_clock.set_width(6 * this.bs + 5 * LINE_WIDTH);
-        this.binary_clock.set_height(height);
+        this.rect.set_width(6 * this.bs + 5 * LINE_WIDTH);
+        this.rect.set_height(height);
+        new_clock.add_child(this.rect);
+    }
+  
+    BuildClock() {
+        let cr = area.get_context();
+        let theme_node = this.binary_clock.get_theme_node();
+
+        let area_height = area.get_height();
+        let area_width = area.get_width();
+
+        // Draw background
+        Clutter.cairo_set_source_color(cr, theme_node.get_foreground_color());
+        cr.setLineWidth(LINE_WIDTH);
+        cr.rectangle(0, 0, area_width, area_height);
+        cr.fill();
+
+        // Draw grid
+        cr.setSourceRGBA(0, 0, 0, 0);
+        cr.setOperator(Cairo.Operator.CLEAR);
+        // ensure no fuzziness
+        let halfHeight = Math.floor(area_height / 2) + (LINE_WIDTH % 2 ? 0.5 : 0);
+        cr.moveTo(0, halfHeight);
+        cr.lineTo(area_width, halfHeight);
+        cr.stroke();
+
+        // Draw dots (precache some stuff)
+        let dim = this.bs - 2 * LINE_WIDTH, // dimension of internal box
+            halfLineWidth = LINE_WIDTH / 2,
+            blockWidth = this.bs + LINE_WIDTH;
+        for (let p = 0; p < this.display_time.length; ++p) {
+            for (let i = 0; i < 6; ++i) {
+                let startx = i * blockWidth;
+                let borderx = startx + this.bs + halfLineWidth; // FOR SURE
+
+                // draw the border
+                cr.moveTo(borderx, 0);
+                cr.lineTo(borderx, area_height);
+                cr.stroke();
+
+                // draw the rectangle.
+                if ((this.display_time[p] & (1 << (5 - i)))) {
+                    cr.rectangle(
+                        startx + PADDING,
+                        p * blockWidth + PADDING,
+                        dim,
+                        dim
+                    );
+                    cr.fill();
+                }
+            }
+        }
+    }
+}
+
+
+class FuzzyClock {
+    constructor() {
+        this.label = new St.Label();
         new_clock.add_child(this.label);
     }
   
@@ -116,7 +172,7 @@ function init() {}
 
 
 function enable() {
-    orig_clock = date_menu.get_children();
+    orig_clock = DATE_MENU.get_children();
     
     let GioSSS = Gio.SettingsSchemaSource;
     let schema = Me.metadata['settings-schema'];
@@ -137,16 +193,16 @@ function enable() {
     else if (_settings.get_boolean('time-tuner'))
         box = new TimeTuner();
 
-    date_menu.remove_all_children(orig_clock);
-    date_menu.add_child(new_clock);
-    signalID = date_menu.connect("notify::text", box.BuildClock);
+    DATE_MENU.remove_all_children(orig_clock);
+    DATE_MENU.add_child(new_clock);
+    signalID = DATE_MENU.connect("notify::text", box.BuildClock);
     box.BuildClock();
 }
 
 
 function disable() {
-    date_menu.disconnect(signalID);
-    date_menu.remove_all_children(new_clock);
+    DATE_MENU.disconnect(signalID);
+    DATE_MENU.remove_all_children(new_clock);
     orig_clock.forEach(element => {
         e_menu.add_child(element)    
     });
