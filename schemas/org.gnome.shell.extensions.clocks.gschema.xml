@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="alternative-clocks-extension">
-    <schema path="/org/gnome/shell/extensions/alternative-clocks" id="org.gnome.shell.extensions.alternative-clocks">
+    <schema path="/org/gnome/shell/extensions/alternative-clocks/" id="org.gnome.shell.extensions.alternative-clocks">
     <key type="b" name="fuzzy-clock">
       <default>true</default>
       <summary>it is a fuzzy clock :)</summary>
