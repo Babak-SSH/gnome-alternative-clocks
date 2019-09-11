@@ -113,12 +113,20 @@ function enable() {
     let schemaDir = Me.dir.get_child('schemas').get_path();
     let schemaSrc = GioSSS.new_from_directory(schemaDir, GioSSS.get_default(), false);
     let schemaObj = schemaSrc.lookup(schema, true);
-    this._settings = new Gio.Settings({ settings_schema: schemaObj });
+    let _settings = new Gio.Settings({ settings_schema: schemaObj });
 
-    //new_clock is the box that will be replaced with default clock.
-    //box is the selected clocks prototype.
+
+    //box is the selected clock.
+    if (_settings.get_boolean('fuzzy-clock'))
+        box = new FuzzyClock();
+    else if (_settings.get_boolean('binary-clock'))
+        box = new BinaryClock();
+    else if (_settings.get_boolean('mhin-clcok'))
+        box = new MhinClock();
+    else if (_settings.get_boolean('time-tuner'))
+        box = new TimeTuner();
+    //new_clock is the boxlayout that will be replaced with default clock.
     new_clock = new St.BoxLayout();
-    box = new FuzzyClock();
 
     date_menu.remove_all_children(orig_clock);
     date_menu.add_child(new_clock);
