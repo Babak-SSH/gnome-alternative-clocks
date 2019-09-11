@@ -11,6 +11,30 @@ var box = null;
 var new_clock = null;
 
 
+MhinClock.prototype = {
+    _init: function(){
+    },
+  
+    BuildTime: function() {}
+}
+
+
+TimeTuner.prototype = {
+    _init: function(){
+    },
+  
+    BuildTime: function() {}
+}
+
+
+BinaryClock.prototype = {
+    _init: function(){
+    },
+  
+    BuildTime: function() {}
+}
+
+
 FuzzyClock.prototype = {
     _init: function(){
         this.label = new St.Label();
