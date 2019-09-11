@@ -28,7 +28,9 @@ class TimeTuner {
 
 
 class BinaryClock {
-    constructor(){
+    constructor() {
+        this.rect = new St.DrawingArea();
+        new_clock.add_child(this.rect);
     }
   
     BuildClock() {}
@@ -36,29 +38,37 @@ class BinaryClock {
 
 
 class FuzzyClock {
-    constructor(){
+    constructor() {
         this.label = new St.Label();
+        // Box size. Should be *even* and integer but still fit vertically.
+        this.bs = Math.floor((Panel.PANEL_ICON_SIZE - 2 * MARGIN - LINE_WIDTH) / 2);
+        if (this.bs % 2) {
+            this.bs -= 1;
+        }
+        let height = 2 * this.bs + LINE_WIDTH;
+        this.binary_clock.set_width(6 * this.bs + 5 * LINE_WIDTH);
+        this.binary_clock.set_height(height);
         new_clock.add_child(this.label);
     }
   
     BuildClock() {
-        var scale = 5
-        var adverbs = ['exactly ', 'around ', 'almost ']
-        var hourList = [' ONE', ' TWO', ' THREE', ' FOUR', ' FIVE', ' SIX',
+        let scale = 5
+        let adverbs = ['exactly ', 'around ', 'almost ']
+        let hourList = [' ONE', ' TWO', ' THREE', ' FOUR', ' FIVE', ' SIX',
                     ' SEVEN', ' EIGHT', ' NINE', ' TEN', ' ELEVEN', ' TWELVE']
-        var minuteList = ['FIVE', 'TEN', 'QUARTER', 'TWENTY', 'TWENTY-FIVE', 'HALF']
-        var time = 'It\'s '
+        let minuteList = ['FIVE', 'TEN', 'QUARTER', 'TWENTY', 'TWENTY-FIVE', 'HALF']
+        let time = 'It\'s '
 
-        var now = new Date();
-        var hours = now.getHours();
-        var minutes = now.getMinutes();
+        let now = new Date();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
 
         //changing to 24hr format.
         if (hours <= 12) {
         hours += 12;
         }
         
-        var dmin = minutes % scale    //used to determine the right adverb.
+        let dmin = minutes % scale    //used to determine the right adverb.
 
         //pos is used in minuteList.
         if (minutes > 30) {
