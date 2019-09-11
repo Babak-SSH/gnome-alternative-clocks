@@ -11,37 +11,37 @@ var box = null;
 var new_clock = null;
 
 
-MhinClock.prototype = {
-    _init: function(){
-    },
+class MhinClock {
+    constructor(){
+    }
   
-    BuildTime: function() {}
+    BuildTime() {}
 }
 
 
-TimeTuner.prototype = {
-    _init: function(){
-    },
+class TimeTuner {
+    constructor(){
+    }
   
-    BuildTime: function() {}
+    BuildTime() {}
 }
 
 
-BinaryClock.prototype = {
-    _init: function(){
-    },
+class BinaryClock {
+    constructor(){
+    }
   
-    BuildTime: function() {}
+    BuildTime() {}
 }
 
 
-FuzzyClock.prototype = {
-    _init: function(){
+class FuzzyClock {
+    constructor(){
         this.label = new St.Label();
         new_clock.add_child(this.label);
-    },
+    }
   
-    BuildTime: function() {
+    BuildTime() {
         scale = 5
         adverbs = ['exactly ', 'around ', 'almost ']
         hourList = [' ONE', ' TWO', ' THREE', ' FOUR', ' FIVE', ' SIX',
@@ -108,6 +108,13 @@ function init() {}
 function enable() {
     orig_clock = date_menu.get_children();
     
+    let GioSSS = Gio.SettingsSchemaSource;
+    let schema = Me.metadata['settings-schema'];
+    let schemaDir = Me.dir.get_child('schemas').get_path();
+    let schemaSrc = GioSSS.new_from_directory(schemaDir, GioSSS.get_default(), false);
+    let schemaObj = schemaSrc.lookup(schema, true);
+    this._settings = new Gio.Settings({ settings_schema: schemaObj });
+
     //new_clock is the box that will be replaced with default clock.
     //box is the selected clocks prototype.
     new_clock = new St.BoxLayout();
