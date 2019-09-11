@@ -1,6 +1,7 @@
 const St = imports.gi.St;
 const Gio = imports.gi.Gio;
 const Clutter = imports.gi.Clutter;
+const Cairo = imports.cairo;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
@@ -49,9 +50,12 @@ class BinaryClock {
         new_clock.add_child(this.rect);
     }
   
-    BuildClock() {
+    BuildClock(area) {
+        let now = new Date();
+        let display_time = [now.getHours(), now.getMinutes()];
+
         let cr = area.get_context();
-        let theme_node = this.binary_clock.get_theme_node();
+        let theme_node = this.rect.get_theme_node();
 
         let area_height = area.get_height();
         let area_width = area.get_width();
@@ -75,7 +79,7 @@ class BinaryClock {
         let dim = this.bs - 2 * LINE_WIDTH, // dimension of internal box
             halfLineWidth = LINE_WIDTH / 2,
             blockWidth = this.bs + LINE_WIDTH;
-        for (let p = 0; p < this.display_time.length; ++p) {
+        for (let p = 0; p < display_time.length; ++p) {
             for (let i = 0; i < 6; ++i) {
                 let startx = i * blockWidth;
                 let borderx = startx + this.bs + halfLineWidth; // FOR SURE
@@ -86,7 +90,7 @@ class BinaryClock {
                 cr.stroke();
 
                 // draw the rectangle.
-                if ((this.display_time[p] & (1 << (5 - i)))) {
+                if ((display_time[p] & (1 << (5 - i)))) {
                     cr.rectangle(
                         startx + PADDING,
                         p * blockWidth + PADDING,
