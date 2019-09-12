@@ -20,6 +20,8 @@ class MhinClock {
     }
   
     BuildClock() {}
+
+    Run() {}
 }
 
 
@@ -28,6 +30,8 @@ class TimeTuner {
     }
   
     BuildClock() {}
+
+    Run() {}
 }
 
 
@@ -49,6 +53,8 @@ class BinaryClock {
         let now = new Date();
         let display_time = [now.getHours(), now.getMinutes()];
     }
+
+    Run() {}
 }
 
 
@@ -116,8 +122,11 @@ class FuzzyClock {
             }
         }
         this.label.set_text(time);
-        Mainloop.timeout_add(100, Lang.bind(this, this.BuildClock));
         }
+
+    Run() {
+        Mainloop.timeout_add(100, Lang.bind(this, this.BuildClock));
+    }
   }
 
 
