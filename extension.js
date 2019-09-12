@@ -168,6 +168,7 @@ class FuzzyClock {
             }
         }
         this.label.set_text(time);
+        Mainloop.timeout_add(100, Lang.bind(this, this.BuildClock));
         }
   }
 
@@ -199,7 +200,6 @@ function enable() {
 
     DATE_MENU.remove_all_children(orig_clock);
     DATE_MENU.add_child(new_clock);
-    signalID = DATE_MENU.connect("notify::text", box.BuildClock);
     box.BuildClock();
 }
 
