@@ -33,13 +33,6 @@ class TimeTuner {
 
 class BinaryClock {
     constructor() {
-        // width of lines between the squares (px)
-        let LINE_WIDTH = 2;
-        // marging around the entire clock top & bottom (px)
-        let MARGIN = 1;
-        // padding square and the black centre
-        let PADDING = 2;
-
         this.rect = new St.DrawingArea();
         // Box size. Should be *even* and integer but still fit vertically.
         this.bs = Math.floor((Panel.PANEL_ICON_SIZE - 2 * MARGIN - LINE_WIDTH) / 2);
@@ -55,54 +48,6 @@ class BinaryClock {
     BuildClock(area) {
         let now = new Date();
         let display_time = [now.getHours(), now.getMinutes()];
-
-        let cr = area.get_context();
-        let theme_node = this.rect.get_theme_node();
-
-        let area_height = area.get_height();
-        let area_width = area.get_width();
-
-        // Draw background
-        Clutter.cairo_set_source_color(cr, theme_node.get_foreground_color());
-        cr.setLineWidth(LINE_WIDTH);
-        cr.rectangle(0, 0, area_width, area_height);
-        cr.fill();
-
-        // Draw grid
-        cr.setSourceRGBA(0, 0, 0, 0);
-        cr.setOperator(Cairo.Operator.CLEAR);
-        // ensure no fuzziness
-        let halfHeight = Math.floor(area_height / 2) + (LINE_WIDTH % 2 ? 0.5 : 0);
-        cr.moveTo(0, halfHeight);
-        cr.lineTo(area_width, halfHeight);
-        cr.stroke();
-
-        // Draw dots (precache some stuff)
-        let dim = this.bs - 2 * LINE_WIDTH, // dimension of internal box
-            halfLineWidth = LINE_WIDTH / 2,
-            blockWidth = this.bs + LINE_WIDTH;
-        for (let p = 0; p < display_time.length; ++p) {
-            for (let i = 0; i < 6; ++i) {
-                let startx = i * blockWidth;
-                let borderx = startx + this.bs + halfLineWidth; // FOR SURE
-
-                // draw the border
-                cr.moveTo(borderx, 0);
-                cr.lineTo(borderx, area_height);
-                cr.stroke();
-
-                // draw the rectangle.
-                if ((display_time[p] & (1 << (5 - i)))) {
-                    cr.rectangle(
-                        startx + PADDING,
-                        p * blockWidth + PADDING,
-                        dim,
-                        dim
-                    );
-                    cr.fill();
-                }
-            }
-        }
     }
 }
 
