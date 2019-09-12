@@ -37,24 +37,44 @@ class TimeTuner {
 
 class BinaryClock {
     constructor() {
+        this.label = new St.Label();
         this.rect = new St.DrawingArea();
         // Box size. Should be *even* and integer but still fit vertically.
-        this.bs = Math.floor((Panel.PANEL_ICON_SIZE - 2 * MARGIN - LINE_WIDTH) / 2);
-        if (this.bs % 2) {
-            this.bs -= 1;
-        }
-        let height = 2 * this.bs + LINE_WIDTH;
-        this.rect.set_width(6 * this.bs + 5 * LINE_WIDTH);
-        this.rect.set_height(height);
+        // this.bs = Math.floor((Panel.PANEL_ICON_SIZE - 2 * MARGIN - LINE_WIDTH) / 2);
+        // if (this.bs % 2) {
+        //     this.bs -= 1;
+        // }
+        // let height = 2 * this.bs + LINE_WIDTH;
+        // this.rect.set_width(6 * this.bs + 5 * LINE_WIDTH);
+        // this.rect.set_height(height);
         new_clock.add_child(this.rect);
+        new_clock.add_child(this.label)
+        // this.rect.connect("repaint", Lang.bind(this, this.BuildClock));
+        this.rect.connect('repaint', this.BuildClock.bind(this));
     }
   
     BuildClock(area) {
-        let now = new Date();
-        let display_time = [now.getHours(), now.getMinutes()];
+        this.label = this.display_time;
     }
 
-    Run() {}
+    Run() {
+        this.on_timeout();
+        Mainloop.timeout_add(UPDATE_INTERVAL, this.on_timeout.bind(this));
+    }
+
+    on_timeout() {
+        let now = new Date();
+        //this.time_label.set_text(now.toLocaleFormat(this.time_format))
+        let display_time = [now.getHours(), now.getMinutes()];
+
+        if ((this.display_time[0] !== display_time[0]) ||
+                (this.display_time[1] !== display_time[1])) {
+            this.display_time = display_time;
+            this.rect.queue_repaint();
+        }
+
+        return true;
+    }
 }
 
 
@@ -125,6 +145,7 @@ class FuzzyClock {
         }
 
     Run() {
+        this.BuildClock();
         Mainloop.timeout_add(100, Lang.bind(this, this.BuildClock));
     }
   }
@@ -150,19 +171,19 @@ function enable() {
         box = new FuzzyClock();
     else if (_settings.get_boolean('binary-clock'))
         box = new BinaryClock();
-    else if (_settings.get_boolean('mhin-clcok'))
+    else if (_settings.get_boolean('mhin-clock'))
         box = new MhinClock();
     else if (_settings.get_boolean('time-tuner'))
         box = new TimeTuner();
 
-    DATE_MENU.remove_all_children(orig_clock);
+    DATE_MENU.remove_all_children();
     DATE_MENU.add_child(new_clock);
-    box.BuildClock();
+    box.Run();
 }
 
 
 function disable() {
-    DATE_MENU.remove_all_children(new_clock);
+    DATE_MENU.remove_all_children();
     orig_clock.forEach(element => {
     DATE_MENU.add_child(element)    
     });
