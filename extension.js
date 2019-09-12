@@ -2,6 +2,8 @@ const St = imports.gi.St;
 const Gio = imports.gi.Gio;
 const Clutter = imports.gi.Clutter;
 const Cairo = imports.cairo;
+const Mainloop = imports.mainloop;
+const Lang = imports.lang;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
@@ -119,6 +121,7 @@ class FuzzyClock {
         let minuteList = ['FIVE', 'TEN', 'QUARTER', 'TWENTY', 'TWENTY-FIVE', 'HALF']
         let time = 'It\'s '
 
+        let pos = 0;
         let now = new Date();
         let hours = now.getHours();
         let minutes = now.getMinutes();
@@ -205,9 +208,8 @@ function enable() {
 
 
 function disable() {
-    DATE_MENU.disconnect(signalID);
     DATE_MENU.remove_all_children(new_clock);
     orig_clock.forEach(element => {
-        e_menu.add_child(element)    
+    DATE_MENU.add_child(element)    
     });
 }
