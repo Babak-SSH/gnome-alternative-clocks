@@ -39,8 +39,8 @@ const AlternativeClockWidget = new GObject.registerClass(
             //defining radion buttons and grouping.
             this._fuzzyRB = new Gtk.RadioButton({label:_("Fuzzy Clock")});
             this._binaryRB = new Gtk.RadioButton({group:this._fuzzyRB, label:_("Binary Clock")});
-            this._mhinRB = new Gtk.RadioButton({group:this._fuzzyRB, label:_("Binary Clock")});
-            this._tunerRB = new Gtk.RadioButton({group:this._fuzzyRB, label:_("Binary Clock")});
+            this._mhinRB = new Gtk.RadioButton({group:this._fuzzyRB, label:_("Mhin Clock")});
+            this._tunerRB = new Gtk.RadioButton({group:this._fuzzyRB, label:_("Time Tuner")});
     
             let rbGroup = new Gtk.Box({orientation:Gtk.Orientation.VERTICAL, homogeneous:false, margin_left:4, margin_top:2, margin_bottom:2, margin_right:4});
             rbGroup.add(this._fuzzyRB);
@@ -57,21 +57,21 @@ const AlternativeClockWidget = new GObject.registerClass(
             
             this._binaryRB.connect('toggled', (b) => {
                 if(b.get_active())
-                    this._settings.set_boolean(BINARY, false);
-                else
                     this._settings.set_boolean(BINARY, true);
+                else
+                    this._settings.set_boolean(BINARY, false);
             });
             this._mhinRB.connect('toggled', (b) => {
                 if(b.get_active())
-                    this._settings.set_boolean(MHIN, false);
-                else
                     this._settings.set_boolean(MHIN, true);
+                else
+                    this._settings.set_boolean(MHIN, false);
               });
             this._tunerRB.connect('toggled', (b) => {
                 if(b.get_active())
-                    this._settings.set_boolean(TUNER, false);
-                else
                     this._settings.set_boolean(TUNER, true);
+                else
+                    this._settings.set_boolean(TUNER, false);
             });
         
             let fuzzy = this._settings.get_boolean(FUZZY);
