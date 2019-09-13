@@ -52,8 +52,58 @@ class BinaryClock {
         this.rect.connect('repaint', Lang.bind(this, this.BuildClock));
     }
   
-    BuildClock(area) {
-        this.label = this.display_time;
+    BuildClock() {
+        let now = new Date();
+        // this.time_label.set_text(now.toLocaleFormat(this.time_format))
+        this.display_time = [now.getHours(), now.getMinutes()];
+
+        let cr = this.rect.get_context();
+        let theme_node = this.rect.get_theme_node();
+
+        let area_height = this.rect.get_height();
+        let area_width = this.rect.get_width();
+
+        // Draw background
+        Clutter.cairo_set_source_color(cr, theme_node.get_foreground_color());
+        cr.setLineWidth(LINE_WIDTH);
+        cr.rectangle(0, 0, area_width, area_height);
+        cr.fill();
+
+        // Draw grid
+        cr.setSourceRGBA(0, 0, 0, 0);
+        cr.setOperator(Cairo.Operator.CLEAR);
+        // ensure no fuzziness
+        let halfHeight = Math.floor(area_height / 2) + (LINE_WIDTH % 2 ? 0.5 : 0);
+        cr.moveTo(0, halfHeight);
+        cr.lineTo(area_width, halfHeight);
+        cr.stroke();
+
+        // Draw dots (precache some stuff)
+        let dim = this.bs - 2 * LINE_WIDTH, // dimension of internal box
+        halfLineWidth = LINE_WIDTH / 2,
+        blockWidth = this.bs + LINE_WIDTH;
+        for (let p = 0; p < this.display_time.length; ++p) {
+            for (let i = 0; i < 6; ++i) {
+                let startx = i * blockWidth;
+                let borderx = startx + this.bs + halfLineWidth; // FOR SURE
+
+                // draw the border
+                cr.moveTo(borderx, 0);
+                cr.lineTo(borderx, area_height);
+                cr.stroke();
+
+                // draw the rectangle.
+                if ((this.display_time[p] & (1 << (5 - i)))) {
+                    cr.rectangle(
+                        startx + PADDING,
+                        p * blockWidth + PADDING,
+                        dim,
+                        dim
+                    );
+                    cr.fill();
+                }
+            }
+        }
     }
 
     Run() {
