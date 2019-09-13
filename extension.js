@@ -17,39 +17,77 @@ let new_clock = null;
 const LINE_WIDTH = 2;
 // marging around the entire clock top & bottom (px)
 const MARGIN = 1;
-// padding square and the black centre
-const PADDING = 2;
 
 class MhinClock {
     constructor(){
+        this.rect = new St.DrawingArea();
+
+        // TODO: define Clock Box size.
+
+        new_clock.add_child(this.rect);
+        // conecting rect to Build function with repaint signal.
+        this.rect.connect('repaint', Lang.bind(this, this.BuildClock));
     }
   
     BuildClock() {}
 
-    Run() {}
+    paint() {
+        // mainloop repeates paint function 
+        // and paint calls the repaint function
+        // which calls the BuildClock function 
+        // every second.
+        this.rect.queue_repaint();
+        return true;
+    }
+
+    Run() {
+        // connecting to mainloop
+        this.paint();
+        Mainloop.timeout_add(1000, this.paint.bind(this));
+    }
 }
 
 
 class TimeTuner {
     constructor(){
+        this.rect = new St.DrawingArea();
+        
+        // TODO: define Clock Box size.        
+
+        new_clock.add_child(this.rect);
+        // conecting rect to Build function with repaint signal.
+        this.rect.connect('repaint', Lang.bind(this, this.BuildClock));
     }
   
     BuildClock() {}
 
-    Run() {}
+    paint() {
+        // mainloop repeates paint function 
+        // and paint calls the repaint function
+        // which calls the BuildClock function 
+        // every second.
+        this.rect.queue_repaint();
+        return true;
+    }
+
+    Run() {
+        // connecting to mainloop
+        this.paint();
+        Mainloop.timeout_add(1000, this.paint.bind(this));
+    }
 }
 
 
 class BinaryClock {
     constructor() {
         this.rect = new St.DrawingArea();
-        //Clock Box size.
-        this.bs = Math.floor((panel.PANEL_ICON_SIZE) - 2*MARGIN - LINE_WIDTH);  // Box size
+        // Clock Box size.
+        this.bs = Math.floor((panel.PANEL_ICON_SIZE) - 2*MARGIN - LINE_WIDTH);  //  Box size
         this.rect.set_width(6*this.bs + 6*LINE_WIDTH - 2);
         this.rect.set_height(2 * this.bs + LINE_WIDTH);
 
         new_clock.add_child(this.rect);
-        //conecting rect to Build function with repaint signal.
+        // conecting rect to Build function with repaint signal.
         this.rect.connect('repaint', Lang.bind(this, this.BuildClock));
     }
   
@@ -63,19 +101,19 @@ class BinaryClock {
         let area_height = this.rect.get_height();
         let area_width = this.rect.get_width();
 
-        // Draw background
+        //  Draw background
         Clutter.cairo_set_source_color(cr, theme_node.get_foreground_color());
         cr.setLineWidth(LINE_WIDTH);
         cr.rectangle(0, 0, area_width, area_height);
         cr.fill();
 
-        // Draw grid
+        //  Draw grid
         cr.setOperator(Cairo.Operator.CLEAR);
         cr.moveTo(0, area_height/2);
         cr.lineTo(area_width, area_height/2);
         cr.stroke();
 
-        // Draw dots
+        //  Draw dots
         for (let p in this.display_time) {
             for (let i=0; i<6; ++i) {
                 cr.moveTo((i+1)*(this.bs + LINE_WIDTH/2) + i*(LINE_WIDTH/2), 0);
@@ -90,16 +128,16 @@ class BinaryClock {
     }
 
     paint() {
-        //mainloop repeates paint function 
-        //and paint calls the repaint function
-        //which calls the BuildClock function 
-        //every second.
+        // mainloop repeates paint function 
+        // and paint calls the repaint function
+        // which calls the BuildClock function 
+        // every second.
         this.rect.queue_repaint();
         return true;
     }
 
     Run() {
-        //connecting to mainloop
+        // connecting to mainloop
         this.paint();
         Mainloop.timeout_add(1000, this.paint.bind(this));
     }
@@ -125,21 +163,21 @@ class FuzzyClock {
         let hours = now.getHours();
         let minutes = now.getMinutes();
 
-        //changing to 24hr format.
+        // changing to 24hr format.
         if (hours <= 12) {
         hours += 12;
         }
         
-        let dmin = minutes % scale    //used to determine the right adverb.
+        let dmin = minutes % scale    // used to determine the right adverb.
 
-        //pos is used in minuteList.
+        // pos is used in minuteList.
         if (minutes > 30) {
             pos = Math.round((60 - minutes) / scale)
         } 
         else {
             pos = Math.round(minutes / scale)
         }
-        //specifing the adverb (almost, exactly, around).
+        // specifing the adverb (almost, exactly, around).
         if (dmin == 0) {
             time += adverbs[0]
             pos -= 1
@@ -154,7 +192,7 @@ class FuzzyClock {
             if (minutes > 30)
                 pos -= 1
         }
-        //specifing the hour and minute words.
+        // specifing the hour and minute words.
         if (minutes <= Math.round(scale/2)) {
             time += hourList[hours - 12 - 1]
         }    
@@ -173,7 +211,7 @@ class FuzzyClock {
         }
 
     Run() {
-        //connecting to mainloop
+        // connecting to mainloop
         this.BuildClock();
         Mainloop.timeout_add(100, Lang.bind(this, this.BuildClock));
     }
@@ -193,7 +231,7 @@ function enable() {
     let schemaObj = schemaSrc.lookup(schema, true);
     let _settings = new Gio.Settings({ settings_schema: schemaObj });
 
-    //new_clock is the boxlayout that will be replaced with default clock.
+    // new_clock is the boxlayout that will be replaced with default clock.
     new_clock = new St.BoxLayout();
     //box is the selected clock.
     if (_settings.get_boolean('fuzzy-clock'))
