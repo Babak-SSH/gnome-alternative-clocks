@@ -37,20 +37,19 @@ class TimeTuner {
 
 class BinaryClock {
     constructor() {
-        this.label = new St.Label();
         this.rect = new St.DrawingArea();
         // Box size. Should be *even* and integer but still fit vertically.
-        // this.bs = Math.floor((Panel.PANEL_ICON_SIZE - 2 * MARGIN - LINE_WIDTH) / 2);
-        // if (this.bs % 2) {
-        //     this.bs -= 1;
-        // }
-        // let height = 2 * this.bs + LINE_WIDTH;
-        // this.rect.set_width(6 * this.bs + 5 * LINE_WIDTH);
-        // this.rect.set_height(height);
+        this.bs = Math.floor((panel.PANEL_ICON_SIZE - 2 * MARGIN - LINE_WIDTH) / 2);
+        this.rect.set_width(6*this.bs + 5*LINE_WIDTH);
+        this.rect.set_height(panel.PANEL_ICON_SIZE-2*MARGIN);
+        if (this.bs % 2) {
+            this.bs -= 1;
+        }
+        let height = 2 * this.bs + LINE_WIDTH;
+        this.rect.set_width(6 * this.bs + 5 * LINE_WIDTH);
+        this.rect.set_height(height);
         new_clock.add_child(this.rect);
-        new_clock.add_child(this.label)
-        // this.rect.connect("repaint", Lang.bind(this, this.BuildClock));
-        this.rect.connect('repaint', this.BuildClock.bind(this));
+        this.rect.connect('repaint', Lang.bind(this, this.BuildClock));
     }
   
     BuildClock(area) {
