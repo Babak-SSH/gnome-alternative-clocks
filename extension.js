@@ -110,10 +110,10 @@ class BinaryClock {
         this.rect.queue_repaint();
         return true;
     }
-    
+
     Run() {
-        this.on_timeout();
-        Mainloop.timeout_add(UPDATE_INTERVAL, this.on_timeout.bind(this));
+        this.paint();
+        Mainloop.timeout_add(100, this.paint.bind(this));
     }
 }
 
