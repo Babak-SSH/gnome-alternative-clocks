@@ -7,8 +7,8 @@ const Lang = imports.lang;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
-const panel = Main.panel;
-const DATE_MENU = panel.statusArea.dateMenu.actor;
+const panel = imports.ui.panel;
+const DATE_MENU = Main.statusArea.dateMenu.actor;
 
 let orig_clock = null;
 let box = null;
