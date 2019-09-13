@@ -44,15 +44,10 @@ class BinaryClock {
     constructor() {
         this.rect = new St.DrawingArea();
         // Box size. Should be *even* and integer but still fit vertically.
-        this.bs = Math.floor((panel.PANEL_ICON_SIZE - 2 * MARGIN - LINE_WIDTH) / 2);
-        this.rect.set_width(6*this.bs + 5*LINE_WIDTH);
-        this.rect.set_height(panel.PANEL_ICON_SIZE-2*MARGIN);
-        if (this.bs % 2) {
-            this.bs -= 1;
-        }
-        let height = 2 * this.bs + LINE_WIDTH;
-        this.rect.set_width(6 * this.bs + 5 * LINE_WIDTH);
-        this.rect.set_height(height);
+        this.bs = Math.floor((panel.PANEL_ICON_SIZE) - 2*MARGIN - LINE_WIDTH);  // Box size
+        this.rect.set_width(6*this.bs + 6*LINE_WIDTH - 2);
+        // this.rect.set_height((panel.PANEL_ICON_SIZE)-2*MARGIN);
+        this.rect.set_height(2 * this.bs + LINE_WIDTH);
         new_clock.add_child(this.rect);
         this.rect.connect('repaint', Lang.bind(this, this.BuildClock));
     }
@@ -75,36 +70,19 @@ class BinaryClock {
         cr.fill();
 
         // Draw grid
-        cr.setSourceRGBA(0, 0, 0, 0);
         cr.setOperator(Cairo.Operator.CLEAR);
-        // ensure no fuzziness
-        let halfHeight = Math.floor(area_height / 2) + (LINE_WIDTH % 2 ? 0.5 : 0);
-        cr.moveTo(0, halfHeight);
-        cr.lineTo(area_width, halfHeight);
+        cr.moveTo(0, area_height/2);
+        cr.lineTo(area_width, area_height/2);
         cr.stroke();
 
-        // Draw dots (precache some stuff)
-        let dim = this.bs - 2 * LINE_WIDTH, // dimension of internal box
-        halfLineWidth = LINE_WIDTH / 2,
-        blockWidth = this.bs + LINE_WIDTH;
-        for (let p = 0; p < this.display_time.length; ++p) {
-            for (let i = 0; i < 6; ++i) {
-                let startx = i * blockWidth;
-                let borderx = startx + this.bs + halfLineWidth; // FOR SURE
-
-                // draw the border
-                cr.moveTo(borderx, 0);
-                cr.lineTo(borderx, area_height);
-                cr.stroke();
-
-                // draw the rectangle.
-                if ((this.display_time[p] & (1 << (5 - i)))) {
-                    cr.rectangle(
-                        startx + PADDING,
-                        p * blockWidth + PADDING,
-                        dim,
-                        dim
-                    );
+        // Draw dots
+        for (let p in this.display_time) {
+            for (let i=0; i<6; ++i) {
+                cr.moveTo((i+1)*(this.bs + LINE_WIDTH/2) + i*(LINE_WIDTH/2), 0);
+                cr.lineTo((i+1)*(this.bs + LINE_WIDTH/2) + i*(LINE_WIDTH/2), area_height)
+                cr.stroke();    
+                if ((this.display_time[p] & (1 << (5-i)))) {
+                    cr.rectangle(LINE_WIDTH + (this.bs + LINE_WIDTH)*i, LINE_WIDTH + (this.bs + LINE_WIDTH)*p, this.bs-2*LINE_WIDTH, this.bs-2*LINE_WIDTH);
                     cr.fill();
                 }
             }
