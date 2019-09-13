@@ -14,6 +14,11 @@ let orig_clock = null;
 let box = null;
 let new_clock = null;
 
+const LINE_WIDTH = 2;
+// marging around the entire clock top & bottom (px)
+const MARGIN = 1;
+// padding square and the black centre
+const PADDING = 2;
 
 class MhinClock {
     constructor(){
