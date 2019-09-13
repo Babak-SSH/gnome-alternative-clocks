@@ -43,18 +43,18 @@ class TimeTuner {
 class BinaryClock {
     constructor() {
         this.rect = new St.DrawingArea();
-        // Box size. Should be *even* and integer but still fit vertically.
+        //Clock Box size.
         this.bs = Math.floor((panel.PANEL_ICON_SIZE) - 2*MARGIN - LINE_WIDTH);  // Box size
         this.rect.set_width(6*this.bs + 6*LINE_WIDTH - 2);
-        // this.rect.set_height((panel.PANEL_ICON_SIZE)-2*MARGIN);
         this.rect.set_height(2 * this.bs + LINE_WIDTH);
+
         new_clock.add_child(this.rect);
+        //conecting rect to Build function with repaint signal.
         this.rect.connect('repaint', Lang.bind(this, this.BuildClock));
     }
   
     BuildClock() {
         let now = new Date();
-        // this.time_label.set_text(now.toLocaleFormat(this.time_format))
         this.display_time = [now.getHours(), now.getMinutes()];
 
         let cr = this.rect.get_context();
@@ -90,13 +90,18 @@ class BinaryClock {
     }
 
     paint() {
+        //mainloop repeates paint function 
+        //and paint calls the repaint function
+        //which calls the BuildClock function 
+        //every second.
         this.rect.queue_repaint();
         return true;
     }
 
     Run() {
+        //connecting to mainloop
         this.paint();
-        Mainloop.timeout_add(100, this.paint.bind(this));
+        Mainloop.timeout_add(1000, this.paint.bind(this));
     }
 }
 
@@ -168,6 +173,7 @@ class FuzzyClock {
         }
 
     Run() {
+        //connecting to mainloop
         this.BuildClock();
         Mainloop.timeout_add(100, Lang.bind(this, this.BuildClock));
     }
