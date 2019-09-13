@@ -106,23 +106,14 @@ class BinaryClock {
         }
     }
 
+    paint() {
+        this.rect.queue_repaint();
+        return true;
+    }
+    
     Run() {
         this.on_timeout();
         Mainloop.timeout_add(UPDATE_INTERVAL, this.on_timeout.bind(this));
-    }
-
-    on_timeout() {
-        let now = new Date();
-        //this.time_label.set_text(now.toLocaleFormat(this.time_format))
-        let display_time = [now.getHours(), now.getMinutes()];
-
-        if ((this.display_time[0] !== display_time[0]) ||
-                (this.display_time[1] !== display_time[1])) {
-            this.display_time = display_time;
-            this.rect.queue_repaint();
-        }
-
-        return true;
     }
 }
 
