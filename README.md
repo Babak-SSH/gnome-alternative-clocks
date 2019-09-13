@@ -18,12 +18,12 @@ A clock showint the time in Tuner.
 The alternative-clocks@babak-ssh directory should be copied to
 /usr/share/gnome-shell/extensions or ~/.local/share/gnome-shell/extensions/::
 
-    ```
+    ```sh
     cp alternative-clocks@babak-ssh ~/.local/share/gnome-shell/extensions/
     ```
 
 you can enable extensions using gnome-tweak-tool or you can enable it from https://extensions.gnome.org/local/ or from terminal using this command:
-    ```
+    ```sh
     gnome-shell-extension-tool -e alternative-clocks@babak-ssh
     ```
 
