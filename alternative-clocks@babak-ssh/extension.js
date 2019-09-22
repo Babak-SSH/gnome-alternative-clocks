@@ -51,14 +51,32 @@ class TimeTuner {
     constructor(){
         this.rect = new St.DrawingArea();
         
-        // TODO: define Clock Box size.        
+        // Clock Box size.
+        this.base = Math.floor((panel.PANEL_ICON_SIZE) - 2*MARGIN - LINE_WIDTH);  //  Box size
+        this.rect.set_width(12*this.base + 12*LINE_WIDTH - 4);
+        this.rect.set_height(2 * this.base + LINE_WIDTH);        
 
         new_clock.add_child(this.rect);
         // conecting rect to Build function with repaint signal.
         this.rect.connect('repaint', this.BuildClock.bind(this));
     }
   
-    BuildClock() {}
+    BuildClock() {
+        let now = new Date();
+        this.display_time = [now.getHours(), now.getMinutes()]
+
+        let cr = this.rect.get_context();
+        let theme_node = this.rect.get_theme_node();
+
+        let area_height = this.rect.get_height();
+        let area_width = this.rect.get_width();
+
+        //  Draw background
+        Clutter.cairo_set_source_color(cr, theme_node.get_foreground_color());
+        cr.setLineWidth(LINE_WIDTH);
+        cr.rectangle(0, 0, area_width, area_height);
+        cr.fill();
+    }
 
     paint() {
         // mainloop repeates paint function 
