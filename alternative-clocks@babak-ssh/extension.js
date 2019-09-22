@@ -81,9 +81,9 @@ class BinaryClock {
     constructor() {
         this.rect = new St.DrawingArea();
         // Clock Box size.
-        this.bs = Math.floor((panel.PANEL_ICON_SIZE) - 2*MARGIN - LINE_WIDTH);  //  Box size
-        this.rect.set_width(6*this.bs + 6*LINE_WIDTH - 2);
-        this.rect.set_height(2 * this.bs + LINE_WIDTH);
+        this.base = Math.floor((panel.PANEL_ICON_SIZE) - 2*MARGIN - LINE_WIDTH);  //  Box size
+        this.rect.set_width(6*this.base + 6*LINE_WIDTH - 2);
+        this.rect.set_height(2 * this.base + LINE_WIDTH);
 
         new_clock.add_child(this.rect);
         // conecting rect to Build function with repaint signal.
@@ -115,11 +115,11 @@ class BinaryClock {
         //  Draw dots
         for (let p in this.display_time) {
             for (let i=0; i<6; ++i) {
-                cr.moveTo((i+1)*(this.bs + LINE_WIDTH/2) + i*(LINE_WIDTH/2), 0);
-                cr.lineTo((i+1)*(this.bs + LINE_WIDTH/2) + i*(LINE_WIDTH/2), area_height)
+                cr.moveTo((i+1)*(this.base + LINE_WIDTH/2) + i*(LINE_WIDTH/2), 0);
+                cr.lineTo((i+1)*(this.base + LINE_WIDTH/2) + i*(LINE_WIDTH/2), area_height)
                 cr.stroke();    
                 if ((this.display_time[p] & (1 << (5-i)))) {
-                    cr.rectangle(LINE_WIDTH + (this.bs + LINE_WIDTH)*i, LINE_WIDTH + (this.bs + LINE_WIDTH)*p, this.bs-2*LINE_WIDTH, this.bs-2*LINE_WIDTH);
+                    cr.rectangle(LINE_WIDTH + (this.base + LINE_WIDTH)*i, LINE_WIDTH + (this.base + LINE_WIDTH)*p, this.base-2*LINE_WIDTH, this.base-2*LINE_WIDTH);
                     cr.fill();
                 }
             }
