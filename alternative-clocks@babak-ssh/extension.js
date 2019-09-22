@@ -3,7 +3,6 @@ const Gio = imports.gi.Gio;
 const Clutter = imports.gi.Clutter;
 const Cairo = imports.cairo;
 const Mainloop = imports.mainloop;
-const Lang = imports.lang;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
@@ -26,7 +25,7 @@ class MhinClock {
 
         new_clock.add_child(this.rect);
         // conecting rect to Build function with repaint signal.
-        this.rect.connect('repaint', Lang.bind(this, this.BuildClock));
+        this.rect.connect('repaint', this.BuildClock.bind(this));
     }
   
     BuildClock() {}
@@ -56,7 +55,7 @@ class TimeTuner {
 
         new_clock.add_child(this.rect);
         // conecting rect to Build function with repaint signal.
-        this.rect.connect('repaint', Lang.bind(this, this.BuildClock));
+        this.rect.connect('repaint', this.BuildClock.bind(this));
     }
   
     BuildClock() {}
@@ -88,7 +87,7 @@ class BinaryClock {
 
         new_clock.add_child(this.rect);
         // conecting rect to Build function with repaint signal.
-        this.rect.connect('repaint', Lang.bind(this, this.BuildClock));
+        this.rect.connect('repaint', this.BuildClock.bind(this));
     }
   
     BuildClock() {
@@ -213,7 +212,7 @@ class FuzzyClock {
     Run() {
         // connecting to mainloop
         this.BuildClock();
-        Mainloop.timeout_add(100, Lang.bind(this, this.BuildClock));
+        Mainloop.timeout_add(100, this.BuildClock.bind(this));
     }
   }
 
