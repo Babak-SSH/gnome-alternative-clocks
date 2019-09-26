@@ -3,14 +3,13 @@ Replace the default Gnome shell clock with COOL clocks.
 
 * Fuzzy-Clock
 A clock showing the time with words (lazy language).
-![Fuzzy Clock]()
+![Fuzzy Clock](fuzzy_clock.png)
 * Binary-Clock
 A clock showing the time in binary format.
-![Binary Clock]()
-* Mhin-Clock (under develop)
-A clock showing the time in progress bar format.
-* Time-Tuner (under develop)
+![Binary Clock](binary_clock.png)
+* Time-Tuner
 A clock showint the time in Tuner. 
+![Time Tuner](time_tuner.png)
 
 
 ***
@@ -19,12 +18,12 @@ The alternative-clocks@babak-ssh directory should be copied to
 /usr/share/gnome-shell/extensions or ~/.local/share/gnome-shell/extensions/::
 
     ```sh
-    cp alternative-clocks@babak-ssh ~/.local/share/gnome-shell/extensions/
+    $ cp alternative-clocks@babak-ssh ~/.local/share/gnome-shell/extensions/
     ```
 
 you can enable extensions using gnome-tweak-tool or you can enable it from https://extensions.gnome.org/local/ or from terminal using this command:
     ```sh
-    gnome-shell-extension-tool -e alternative-clocks@babak-ssh
+    $ gnome-shell-extension-tool -e alternative-clocks@babak-ssh
     ```
 
 
