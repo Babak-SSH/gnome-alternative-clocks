@@ -15,7 +15,7 @@ A clock showint the time in Tuner.
 ***
 ## Instalation
 The alternative-clocks@babak-ssh directory should be copied to
-/usr/share/gnome-shell/extensions or ~/.local/share/gnome-shell/extensions/::
+/usr/share/gnome-shell/extensions or ~/.local/share/gnome-shell/extensions/:
 
     $ cp alternative-clocks@babak-ssh ~/.local/share/gnome-shell/extensions/
 
@@ -25,6 +25,8 @@ you can enable extensions using gnome-tweak-tool or you can enable it from https
 
 
 ## License
+
+```
             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                     Version 2, December 2004
 
@@ -38,4 +40,5 @@ you can enable extensions using gnome-tweak-tool or you can enable it from https
    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
   0. You just DO WHAT THE FUCK YOU WANT TO.
+```
 
