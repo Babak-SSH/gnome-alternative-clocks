@@ -7,7 +7,7 @@ const Mainloop = imports.mainloop;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
 const panel = imports.ui.panel;
-const DATE_MENU = Main.statusArea.dateMenu.actor;
+const DATE_MENU = Main.panel.statusArea.dateMenu.actor;
 
 let orig_clock = null;
 let box = null;
@@ -17,7 +17,7 @@ const LINE_WIDTH = 2;
 // marging around the entire clock top & bottom (px)
 const MARGIN = 1;
 
-class MhinClock {
+class TimeTuner {
     constructor(){
         this.rect = new St.DrawingArea();
 
@@ -47,14 +47,14 @@ class MhinClock {
 }
 
 
-class TimeTuner {
+class MhinClock {
     constructor(){
         this.rect = new St.DrawingArea();
         
         // Clock Box size.
         this.base = Math.floor((panel.PANEL_ICON_SIZE) - 2*MARGIN - LINE_WIDTH);  //  Box size
-        this.rect.set_width(12*this.base + 12*LINE_WIDTH - 4);
-        this.rect.set_height(2 * this.base + LINE_WIDTH);        
+        this.rect.set_width(24*this.base + 24*LINE_WIDTH);
+        this.rect.set_height(2*this.base + 2*LINE_WIDTH);        
 
         new_clock.add_child(this.rect);
         // conecting rect to Build function with repaint signal.
@@ -76,6 +76,29 @@ class TimeTuner {
         cr.setLineWidth(LINE_WIDTH);
         cr.rectangle(0, 0, area_width, area_height);
         cr.fill();
+
+        //  Draw grid
+        cr.setOperator(Cairo.Operator.CLEAR);
+        cr.moveTo(0, area_height/2);
+        cr.lineTo(area_width, area_height/2);
+        cr.stroke();
+
+        // Draw hour bars
+        for (let i = 0;i < 24;i++) {
+            cr.moveTo(i*(area_width/24), 0);
+            cr.lineTo(i*(area_width/24), area_height/4)
+            cr.stroke();
+        }
+
+        //Draw minute bars
+        for (let i=0;i < 60;i++) {
+            cr.moveTo(i*(area_width/60), area_height/2)
+            if (i%5==0)
+                cr.lineTo(i*(area_width/60), 3*area_height/4)
+            else
+                cr.lineTo(i*(area_width/60), 5*area_height/8)
+            cr.stroke();
+        }
     }
 
     paint() {
@@ -271,4 +294,4 @@ function disable() {
     orig_clock.forEach(element => {
     DATE_MENU.add_child(element)    
     });
-}
+}   
