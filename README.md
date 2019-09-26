@@ -28,9 +28,9 @@ you can enable extensions using gnome-tweak-tool or you can enable it from https
 
 ```
             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-                    Version 2, December 2004
+                    Version 2, September 2019
 
- Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+ Copyright (C) 2019 Babak Sefidgar <babak.sefidgar@gmail.com>
 
  Everyone is permitted to copy and distribute verbatim or modified
  copies of this license document, and changing it is allowed as long
