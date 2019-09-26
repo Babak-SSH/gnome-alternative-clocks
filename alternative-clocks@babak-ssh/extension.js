@@ -17,7 +17,7 @@ const LINE_WIDTH = 2;
 // marging around the entire clock top & bottom (px)
 const MARGIN = 1;
 
-class TimeTuner {
+class MhinClock {
     constructor(){
         this.rect = new St.DrawingArea();
 
@@ -47,7 +47,7 @@ class TimeTuner {
 }
 
 
-class MhinClock {
+class TimeTuner {
     constructor(){
         this.rect = new St.DrawingArea();
         
@@ -63,7 +63,7 @@ class MhinClock {
   
     BuildClock() {
         let now = new Date();
-        this.display_time = [now.getHours(), now.getMinutes()]
+        this.display_time = [now.getHours(), now.getMinutes()];
 
         let cr = this.rect.get_context();
         let theme_node = this.rect.get_theme_node();
@@ -86,19 +86,29 @@ class MhinClock {
         // Draw hour bars
         for (let i = 0;i < 24;i++) {
             cr.moveTo(i*(area_width/24), 0);
-            cr.lineTo(i*(area_width/24), area_height/4)
+            cr.lineTo(i*(area_width/24), area_height/4);
             cr.stroke();
         }
 
         //Draw minute bars
         for (let i=0;i < 60;i++) {
-            cr.moveTo(i*(area_width/60), area_height/2)
+            cr.moveTo(i*(area_width/60), area_height/2);
             if (i%5==0)
-                cr.lineTo(i*(area_width/60), 3*area_height/4)
+                cr.lineTo(i*(area_width/60), 3*area_height/4);
             else
-                cr.lineTo(i*(area_width/60), 5*area_height/8)
+                cr.lineTo(i*(area_width/60), 5*area_height/8);
             cr.stroke();
         }
+
+        // Draw hour hand.
+        cr.moveTo((this.display_time[0] + (this.display_time[1]/60))*(area_width/24), 0);
+        cr.lineTo((this.display_time[0] + (this.display_time[1]/60))*(area_width/24), area_height/2);
+        cr.stroke();
+
+        //Draw minute hand.
+        cr.moveTo(this.display_time[1] * (area_width/60), area_height/2);
+        cr.lineTo(this.display_time[1] * (area_width/60), area_height);
+        cr.stroke();
     }
 
     paint() {
