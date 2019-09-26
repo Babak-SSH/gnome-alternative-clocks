@@ -101,8 +101,8 @@ class TimeTuner {
         }
 
         // Draw hour hand.
-        cr.moveTo((this.display_time[0] + (this.display_time[1]/60))*(area_width/24), 0);
-        cr.lineTo((this.display_time[0] + (this.display_time[1]/60))*(area_width/24), area_height/2);
+        cr.moveTo((this.display_time[0] - 1 + (this.display_time[1]/60))*(area_width/24), 0);
+        cr.lineTo((this.display_time[0] - 1 + (this.display_time[1]/60))*(area_width/24), area_height/2);
         cr.stroke();
 
         //Draw minute hand.
