@@ -10,7 +10,6 @@ const config = imports.misc.config;
 const _ = Gettext.gettext;
 const FUZZY = 'fuzzy-clock';
 const BINARY = 'binary-clock';
-const MHIN = 'mhin-clock';
 const TUNER = 'time-tuner';
 
 
@@ -39,13 +38,11 @@ const AlternativeClockWidget = new GObject.registerClass(
             //defining radion buttons and grouping.
             this._fuzzyRB = new Gtk.RadioButton({label:_("Fuzzy Clock")});
             this._binaryRB = new Gtk.RadioButton({group:this._fuzzyRB, label:_("Binary Clock")});
-            this._mhinRB = new Gtk.RadioButton({group:this._fuzzyRB, label:_("Mhin Clock")});
             this._tunerRB = new Gtk.RadioButton({group:this._fuzzyRB, label:_("Time Tuner")});
     
             let rbGroup = new Gtk.Box({orientation:Gtk.Orientation.VERTICAL, homogeneous:false, margin_left:4, margin_top:2, margin_bottom:2, margin_right:4});
             rbGroup.add(this._fuzzyRB);
             rbGroup.add(this._binaryRB);
-            rbGroup.add(this._mhinRB);
             rbGroup.add(this._tunerRB);
     
             this._fuzzyRB.connect('toggled', (b) => {
@@ -61,12 +58,6 @@ const AlternativeClockWidget = new GObject.registerClass(
                 else
                     this._settings.set_boolean(BINARY, false);
             });
-            this._mhinRB.connect('toggled', (b) => {
-                if(b.get_active())
-                    this._settings.set_boolean(MHIN, true);
-                else
-                    this._settings.set_boolean(MHIN, false);
-              });
             this._tunerRB.connect('toggled', (b) => {
                 if(b.get_active())
                     this._settings.set_boolean(TUNER, true);
@@ -76,12 +67,10 @@ const AlternativeClockWidget = new GObject.registerClass(
         
             let fuzzy = this._settings.get_boolean(FUZZY);
             let binary = this._settings.get_boolean(BINARY);
-            let mhin = this._settings.get_boolean(MHIN);
             let tuner = this._settings.get_boolean(TUNER);
     
             this._fuzzyRB.set_active(fuzzy);
             this._binaryRB.set_active(binary);
-            this._mhinRB.set_active(mhin);
             this._tunerRB.set_active(tuner);
     
             this._grid.attach(new Gtk.Label({ label: btnPosition, wrap: true, xalign: 0.5 }), 0,  8, 7, 1);

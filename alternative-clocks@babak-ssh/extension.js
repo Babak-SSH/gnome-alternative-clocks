@@ -17,35 +17,6 @@ const LINE_WIDTH = 2;
 // marging around the entire clock top & bottom (px)
 const MARGIN = 1;
 
-class MhinClock {
-    constructor(){
-        this.rect = new St.DrawingArea();
-
-        // TODO: define Clock Box size.
-
-        new_clock.add_child(this.rect);
-        // conecting rect to Build function with repaint signal.
-        this.rect.connect('repaint', this.BuildClock.bind(this));
-    }
-  
-    BuildClock() {}
-
-    paint() {
-        // mainloop repeates paint function 
-        // and paint calls the repaint function
-        // which calls the BuildClock function 
-        // every second.
-        this.rect.queue_repaint();
-        return true;
-    }
-
-    Run() {
-        // connecting to mainloop
-        this.paint();
-        Mainloop.timeout_add(1000, this.paint.bind(this));
-    }
-}
-
 
 class TimeTuner {
     constructor(){

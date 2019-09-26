@@ -16,11 +16,6 @@
       <summary>it is a time tuner :)</summary>
       <description>it is a nice and cool clock.</description>
     </key>
-    <key type="b" name="mhin-clock">
-      <default>false</default>
-      <summary>it is a mhin clock :)</summary>
-      <description>it is a nice and cool clock.</description>
-    </key>
 
     </schema>
   </schemalist>
